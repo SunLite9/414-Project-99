@@ -1,0 +1,19 @@
+{
+  "name": "UCLA STATS 414",
+  "headFontFace": "Arial",
+  "bodyFontFace": "Arial",
+  "colors": {
+    "dk1": "333333",
+    "lt1": "FFFFFF",
+    "dk2": "005587",
+    "lt2": "DAEBFE",
+    "accent1": "2774AE",
+    "accent2": "FFD100",
+    "accent3": "003B5C",
+    "accent4": "8BB8E8",
+    "accent5": "FFB81C",
+    "accent6": "999999",
+    "hlink": "00598C",
+    "folHlink": "5223B0"
+  }
+}

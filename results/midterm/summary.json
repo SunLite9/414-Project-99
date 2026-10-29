@@ -1,0 +1,48 @@
+{
+  "chosen": {
+    "elastic_net_logistic__no_volume": {
+      "C": 0.01,
+      "l1": 0.5
+    },
+    "elastic_net_logistic__with_volume": {
+      "C": 0.01,
+      "l1": 0.5
+    },
+    "random_forest__no_volume": {
+      "max_depth": 4,
+      "min_samples_leaf": 20
+    },
+    "random_forest__with_volume": {
+      "max_depth": 4,
+      "min_samples_leaf": 50
+    },
+    "xgboost__no_volume": {
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "n_estimators": 200
+    },
+    "xgboost__with_volume": {
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "n_estimators": 200
+    }
+  },
+  "best_on_validation": "elastic_net_logistic__with_volume",
+  "strategy_margin": 0.03,
+  "n": {
+    "test": {
+      "markets": 2299,
+      "losses": 114
+    },
+    "train": {
+      "markets": 4358,
+      "losses": 179
+    },
+    "validation": {
+      "markets": 3694,
+      "losses": 220
+    }
+  },
+  "collection_lag_median_h": 2.475170281388889,
+  "observed_after_close": 0.4951212443242199
+}

@@ -1,0 +1,26 @@
+# Secrets: never commit (course rule: keep the DB password out of GitHub)
+.env
+*.env
+
+# Local-only working files
+data/raw/_parts/
+data/raw/_to_delete/
+data/raw/_obtar/
+data/export/
+
+# Python / notebooks
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Course data is not redistributed (course rule): rebuild data/raw with the pull scripts during the access window
+data/raw/
+kalshi_events.parquet
+# Course materials (lecture slides, data guides) stay on Bruin Learn
+L3_prediction_markets_slides.pdf
+Polymarket_Data_User_Guide.pdf

@@ -1,0 +1,3 @@
+rule,entries,losses,total_gross,per_contract
+buy every eligible test entry,2299,114,-19.609999999999967,-0.008529795563288372
+elastic_net_logistic__with_volume: p − ask > 0.03,0,0,0.0,

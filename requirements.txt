@@ -1,0 +1,11 @@
+pandas>=2.2
+pyarrow>=15
+numpy>=1.26
+scikit-learn>=1.5
+xgboost>=2.0
+matplotlib>=3.8
+jupyter
+nbformat
+# only needed to re-pull data while course access was open:
+psycopg2-binary
+requests

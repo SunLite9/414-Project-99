@@ -1,0 +1,8 @@
+stage,rows,markets
+Hourly candles for finalized yes/no markets,3388199,514755
+Candle ends before the market closed,2894876,224712
+Valid two-sided quote with ask 90–99¢,244106,45540
+Midpoint ≥ 90¢ and spread ≤ 5¢,79784,10898
+First observed eligible quote per market,10898,10898
+Remove events spanning two splits,10554,10554
+Purge labels settled after their split cut-off,10351,10351

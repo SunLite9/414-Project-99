@@ -1,0 +1,18 @@
+{
+  "candles": 7173620,
+  "markets": 839613,
+  "events": 67261,
+  "top1pct_market_volume_share": 0.8200474511132582,
+  "markets_with_zero_volume": 0.7246671978637778,
+  "candles_with_zero_volume": 0.8915483396109635,
+  "markets_per_event_median": 3.0,
+  "valid_quote_share": 0.7714959811085617,
+  "quotes_below_10c": 0.20854113141776942,
+  "quotes_above_90c": 0.05548983551841666,
+  "median_spread": 0.03999999910593033,
+  "calibration_markets": 129866,
+  "mean_abs_calibration_gap": 0.005320006629002809,
+  "long_shots_total": 29686,
+  "long_shot_winners": 1218,
+  "long_shot_winners_in_course_categories": 35
+}
