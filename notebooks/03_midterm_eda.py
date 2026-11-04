@@ -137,7 +137,7 @@ us.save(fig, FIG/'eda_calibration_full_range.png')
 cal.drop(columns='b').round(4)
 
 # %% [markdown]
-# ## 4 · Long shots: how many 1–10¢ contracts won? (sets up the final project)
+# ## 4 · Long shots: how many 1–10¢ contracts won?
 # Counts by the four course categories, using the mapping in the team handbook.
 
 # %%

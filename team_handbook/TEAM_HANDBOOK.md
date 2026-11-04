@@ -1,8 +1,8 @@
 # STATS 414 Team Handbook
 
-**Living document.** Last updated: October 27, 2026 (afternoon) · Team: Juan Cortes-Aguiar, Ravikiran Madichetty, Ashish Singh
+**Living document.** Last updated: November 4, 2026 · Team: Juan Cortes-Aguiar, Ravikiran Madichetty, Ashish Singh
 
-This handbook explains everything the project does, technically and practically, so any of us can present it, defend it in Q&A, rerun it, or extend it. It is updated whenever the work changes; the [change log](#13-change-log) at the bottom lists what changed and when. If something here disagrees with the code, the code is right and this document needs fixing; say so in the team chat.
+This handbook explains everything the project does, technically and practically, so any of us can present it, defend it in Q&A, rerun it, or extend it. It is updated whenever the work changes; the [change log](#12-change-log) at the bottom lists what changed and when. If something here disagrees with the code, the code is right and this document needs fixing; say so in the team chat.
 
 **Contents**
 1. [Project at a glance](#1-project-at-a-glance)
@@ -12,37 +12,37 @@ This handbook explains everything the project does, technically and practically,
 5. [Working in the repository](#5-working-in-the-repository)
 6. [Midterm: "Almost Certain?" step by step](#6-midterm-almost-certain-step-by-step)
 7. [Midterm results and how to talk about them](#7-midterm-results-and-how-to-talk-about-them)
-8. [Final: "Who Knew?" plan and methods](#8-final-who-knew-plan-and-methods)
-9. [Statistics and ML reference](#9-statistics-and-ml-reference)
-10. [Lecture map](#10-lecture-map)
-11. [Glossary](#11-glossary)
-12. [Decisions and open questions](#12-decisions-and-open-questions)
-13. [Change log](#13-change-log)
+8. [Statistics and ML reference](#8-statistics-and-ml-reference)
+9. [Lecture map](#9-lecture-map)
+10. [Glossary](#10-glossary)
+11. [Decisions and open questions](#11-decisions-and-open-questions)
+12. [Change log](#12-change-log)
 
 ---
 
 ## 1. Project at a glance
 
-| | Midterm: "Almost Certain?" | Final: "Who Knew?" |
-| --- | --- | --- |
-| Question | Do Kalshi YES contracts first seen at a 90–99¢ ask win as often as their price says, and can market features predict which favorites lose better than the price? | Among 1–10¢ long shots that won, did prices or volume move before the news became public (informed trading)? |
-| Categories | All | Politics, Technology, Entertainment, Economy (required by the syllabus) |
-| Methods | Calibration, elastic-net logistic regression, random forest, XGBoost, chronological validation, event bootstrap | Information leakage score, Isolation Forest, Random Cut Forest, synthetic-injection evaluation, PU learning on confirmed insider wallets, an AI agent for news timestamps |
-| Deliverable | 15-minute presentation including Q&A | 15-minute presentation; report of at least 10 pages with source code |
-| Due | Wed Oct 28, 2026 (in class) | Presentation Wed Dec 2; report Fri Dec 11, 5pm |
-| Status | Analysis and slides done; rehearsal pending | Planning; data pull on Oct 28 morning |
+| | Midterm: "The 99-Cent Question" |
+| --- | --- |
+| Question | Do Kalshi YES contracts first seen at a 90–99¢ ask win as often as their price says, and can market features predict which favorites lose better than the price? |
+| Categories | All |
+| Methods | EDA, calibration, elastic-net logistic regression, random forest, XGBoost, chronological validation, event bootstrap |
+| Deliverable | 15-minute presentation including Q&A |
+| Due | Wed Oct 28, 2026 (in class) |
+| Status | Presented |
 
-The project plan with dates lives in the shared doc *STATS 414 Project Plan*; the repository is `github.com/SunLite9/414-Project` (private).
+**Final:** on Nov 4 Prof. Cheng replaced the original final topic (informed trading on long shots, "Who Knew?") with a new assignment. The old final plan, its order-book data and its scripts were removed from the project.
+
+The project plan with dates lives in the shared doc *STATS 414 Project Plan*; the repository is `github.com/SunLite9/414-Project-99` (public; no raw data or credentials).
 
 ## 2. Course requirements and how we meet them
 
 From the syllabus (Prof. Guang Cheng, TA Hengzhi He):
 
 - **Grading:** quizzes 20%, midterm presentation 20%, final presentation 30%, final report 30%. Presentations and reports are graded by **ranking** against other teams, so clarity and novelty matter, not only correctness.
-- **Data:** "strictly required to use the prediction market data." We use the course's Kalshi database (and Polymarket lab data for the final's check against confirmed cases).
+- **Data:** "strictly required to use the prediction market data." We use the course's Kalshi database.
 - **Midterm:** basic analysis of prediction-market data with predictive-AI algorithms, 15 minutes per team including Q&A. Ours covers calibration, three model families from Weeks 3–4 and honest validation.
-- **Final:** insider or informed-trader detection in Politics, Technology, Entertainment and Economy markets. Ours detects information leakage before public news on long-shot winners.
-- **Final report:** at least 10 pages plus source code, due Dec 11 at 5pm. Strong projects may be turned into a conference submission, so we write it in LaTeX with a conference-style template.
+- **Final:** changed by Prof. Cheng on Nov 4; this handbook will cover it once the new assignment is set.
 - **Course rules we follow:** never try to identify a person behind a wallet; never put the database password in a shared file or on GitHub; the course data is not redistributed outside the class.
 
 ## 3. Prediction markets in ten minutes
@@ -51,9 +51,7 @@ From the syllabus (Prof. Guang Cheng, TA Hengzhi He):
 - **Price = probability.** If you believe the event has probability *p* and a YES share costs *c*, your expected profit is *p* − *c*. Buyers push the price up when *p* > *c*, so the price settles near the crowd's probability. Fees, thin markets and risk aversion bend it, so a price is an estimate, not a fact.
 - **Order book.** Traders post **bids** (offers to buy YES) and **asks** (offers to sell YES). The **spread** is ask − bid; the **midpoint** is (bid + ask)/2. A **taker** trades against an existing order; a **maker** posts one and waits. A large order "walks the book" and moves the price.
 - **Events and ladders.** An event groups related markets, for example one market per strike price ("gas above $3.10, $3.20, …"). Markets in one event share a cause, so they are **not independent observations**. This is why we resample whole events in our bootstraps.
-- **Resolution.** Kalshi resolves markets itself under its rulebook. Polymarket uses the UMA oracle with proposals, a dispute window and bonds.
-- **Kalshi vs Polymarket.** Kalshi is a US exchange regulated by the CFTC; traders are ID-verified but **trades are anonymous in public data**. Polymarket settles on the Polygon blockchain; every trade shows a **wallet** (pseudonymized in the lab's data) but no identity. So wallet-level insider detection is only possible on Polymarket; on Kalshi we work at the market level.
-- **Insiders in the news.** Confirmed or charged cases include the Maduro-raid market (a US Army soldier charged by DOJ/CFTC in 2026), US strikes on Iran, Google search markets, and Kalshi's own February 2026 penalties against a MrBeast video editor and a former California candidate. Labels are few and biased toward the people who got caught.
+- **Resolution.** Kalshi resolves markets itself under its rulebook.
 
 ## 4. Our data
 
@@ -62,9 +60,6 @@ From the syllabus (Prof. Guang Cheng, TA Hengzhi He):
 | Source | What it holds | Access |
 | --- | --- | --- |
 | Kalshi course database (PostgreSQL) | `markets`, `events`, `hourly_candles` | Read-only login from Prof. Cheng; **window ends Oct 29, 2026, 11:59pm PT** |
-| Kalshi order-book files (CloudFront) | Per UTC hour: `events-*.parquet` (every order-book level change: `ts_ms, asset_id, market, side, price, size`) and `snap-*.parquet` (full book at the start of the hour: `bids`, `asks` lists) | Same login. **Downloaded Oct 27:** all 583 hours, Oct 1 17:00 to Oct 25 23:00 UTC, no gaps, 1,166 files, 1.73 GB. On Ashish's Mac in `data/raw/orderbook/` (too large for Git) |
-| Polymarket lab data (guest lecture) | Market catalog, resolutions, hourly order books since May 30, per-wallet trades through Oct 5 | Catalog needs the lab password; files are public |
-| Polymarket confirmed-insider labels | `wallet_features.csv`: 55,952 wallets, 19 confirmed insiders (lab list of 36) | Course materials, `lectures/Week 2/notebooks/data` |
 
 Credentials live only in a local `.env` file (git-ignored). Never paste them into a notebook.
 
@@ -75,7 +70,6 @@ Credentials live only in a local `.env` file (git-ignored). Never paste them int
 | `candles/candles-YYYY-MM-DD.parquet` (20 files) | 7,173,620 | Every hourly candle for every market, Oct 8–27 UTC |
 | `markets.parquet` | 839,613 | Metadata for every market with a candle: result, status, open/close times, scheduled event time, rules text |
 | `events.parquet` | 67,261 | Event title, series, **category** |
-| `markets_2026-10-28.parquet`, `events_2026-10-28.parquet` | 839,613 / 67,261 | Same markets refreshed on Oct 28: 7,977 more now have a final yes/no (522,732 in all). Use these for the final; the midterm used the Oct 27 snapshot (`markets.parquet`) |
 
 Key columns:
 
@@ -90,9 +84,7 @@ Key columns:
 3. **`close_time` is the actual close.** Settlement follows it by a median of 3 minutes. Using it as a feature would leak the answer, so we only use it to require entries before the close; time-to-event uses the scheduled `occurrence_datetime`.
 4. **Status values.** Of 839,613 markets, 514,755 are finalized with a yes/no result; 3,420 finalized markets are "scalar" and excluded.
 5. **Server timeout.** The database cancels any query after 2 minutes, so whole-table counts fail; we pulled in 6-hour chunks.
-6. **Final database refresh (Oct 28):** `notebooks/refresh_from_db.py` re-pulled Oct 26 (unchanged: 199,680 rows, already complete) and refreshed every market's outcome. Oct 27 is partial and not needed (team decision Oct 28). Database access ends Oct 29, 11:59pm PT.
-8. **Order books:** a book at time T = the hour's snapshot, then every delta up to T in file order (several changes can share a millisecond). `size = 0` removes a level. One hour holds millions of rows (Oct 20 00:00 UTC: 3.48M changes over 7,455 books).
-7. **Polymarket lab quirks** (from the guest lecture): status flags are never updated (filter on dates), catalog prices are stale (check `synced_at`), some order-book snapshots are stale, and not every market's book is recorded.
+6. **Access ended** Oct 29, 2026, 11:59pm PT; the raw data stays on Ashish's Mac and is not in the repo.
 
 ## 5. Working in the repository
 
@@ -117,7 +109,7 @@ slides/midterm/                Almost_Certain_Midterm.pptx (+ PDF) and build_dec
 ### 5.2 Setup and running
 
 ```bash
-git clone git@github.com:SunLite9/414-Project.git && cd 414-Project
+git clone https://github.com/SunLite9/414-Project-99.git && cd 414-Project-99
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cd notebooks
@@ -134,8 +126,8 @@ Re-runs can differ in the 6th–8th decimal place because multithreaded tree mod
 - **Branching:** everyone pushes to `main`. Run `git pull` before you start and before you push; write commit messages that say what changed and why.
 - **Notebooks:** edit the `.py` source, then `python py2nb.py 02_midterm_models.py 02_midterm_models.ipynb` and execute. This keeps diffs readable.
 - **Plots and slides** follow `style_guide/STYLE_GUIDE.md` (UCLA colors, Arial). Plots must call `ucla_style.apply()`.
-- **Where Claude works:** the Project folder on Ashish's Mac (`Documents/STATS_414/Project`) holds the working copy and the large local-only files (raw 6-hour parts, order books). The repo is the shared source of truth.
-- **New lecture slides** go into `Documents/STATS_414/lectures` and are summarized in [section 10](#10-lecture-map).
+- **Where Claude works:** the Project folder on Ashish's Mac (`Documents/STATS_414/Project`) holds the working copy and the local-only raw data (`data/raw/`: candles and market metadata). The repo is the shared source of truth.
+- **New lecture slides** go into `Documents/STATS_414/lectures` and are summarized in [section 9](#9-lecture-map).
 
 ## 6. Midterm: "Almost Certain?" step by step
 
@@ -254,53 +246,7 @@ The calibration intervals are Wilson intervals per bin; markets in one event are
 - *What about the 25% sample version?* It reproduces exactly; the full data quadruples the losses and tightens every interval.
 - *Can you trade this?* No: the data was backfilled, and we cannot see depth, fills or fees.
 
-## 8. Final: "Who Knew?" plan and methods
-
-### 8.1 Population
-
-YES contracts whose first valid quote has an ask of 1–10¢, one entry per market, in the four required categories:
-
-| Course category | Kalshi categories |
-| --- | --- |
-| Politics | Politics, Elections |
-| Technology | Science and Technology, Companies |
-| Entertainment | Entertainment |
-| Economy | Economics, Financials |
-
-Long shots that **won** are the cases; long shots that lost are the comparison group.
-
-**Sample-size warning (from notebook 03):** with the first-quote rule, only **35** long shots priced 1–10¢ won in the four course categories during Oct 8–27 (Economy 20, Politics 8, Technology 6, Entertainment 1), out of 1,218 long-shot winners overall. Ways to get enough cases: widen to 1–15¢ or use every crossing below 10¢ rather than the first quote; use the order books back to Oct 1; add the Polymarket confirmed-insider events; and treat the other categories as a larger comparison set. Sports, Crypto, Weather and Mentions serve only as comparison or placebo groups.
-
-### 8.2 When did the news break?
-
-For each winning long shot we need the time the outcome became public:
-- **Scheduled releases** (CPI, Fed decisions, gas-price prints): official calendars, so the time is exact.
-- **Unscheduled news:** the earliest report in GDELT (a free global news index, 15-minute updates) or found by an **AI agent** that searches news archives and returns a timestamp with its source. This is where the course's agents half (Weeks 6–8: reasoning, tool use, memory) comes in.
-- Every timestamp records its source and a confidence level; we check a sample by hand.
-
-### 8.3 Measures
-
-- **Information leakage score** for each market: ILS = (p_before_news − p_open)/(p_resolution − p_open). It is the share of the total price move that happened before the news. ILS near 0 means the market learned at the announcement; near 1 means the price got there before the public knew (see "Per-Market Information Leakage and Order-Flow Skill", arXiv 2605.02287).
-- **Pre-news features** from hourly candles: volume relative to the market's own baseline, price drift, change in open interest, spread; from order books where available: buy/sell imbalance and depth.
-
-### 8.4 Detectors
-
-- **Isolation Forest** (Week 4): random axis-parallel cuts; points isolated in few cuts are anomalous. Score s(x) = 2^(−E[h(x)]/c(n)).
-- **Random Cut Forest** (Week 4): a streaming version that scores each new hour by how much it disrupts the tree ("CoDisp"), suited to price series within a market. **Online Isolation Forest** is the alternative.
-- **Baseline to beat:** rank by the largest volume spike. If the forest does not beat it, we say so (the guest lecture's demo found the simple "biggest spender" ranking beat Isolation Forest on confirmed insiders).
-
-### 8.5 Evaluation without many labels
-
-- **Synthetic injection:** plant fake informed buying (a burst of long-shot buying hours before resolution) into real markets and measure how many plants each detector recovers (recall at k).
-- **Winners vs losers:** do winning long shots score higher than losing ones?
-- **Scheduled vs unscheduled news:** scheduled releases should show little leakage; a detector that flags them heavily is picking up noise.
-- **Polymarket check:** run the same features on the confirmed insider events (Iran strikes, Maduro) and on the lab's confirmed wallets, using **PU learning** (positive–unlabeled: few known positives, everything else unlabeled) as in the Week 4 lecture.
-
-### 8.6 Deliverables
-
-Final presentation (Dec 2, same slide system), and a report of at least 10 pages in LaTeX: introduction, data, methods, results, limitations, and an appendix with code pointers.
-
-## 9. Statistics and ML reference
+## 8. Statistics and ML reference
 
 | Concept | One-line meaning | Where we use it |
 | --- | --- | --- |
@@ -313,50 +259,49 @@ Final presentation (Dec 2, same slide system), and a report of at least 10 pages
 | Gradient boosting (XGBoost) | Trees added one at a time to fix earlier errors | Midterm model family |
 | Calibration | Predicted probability = observed frequency | Slide 6 |
 | Bootstrap | Resample data to measure variability | Event-level intervals |
-| Anomaly detection | Find points that are "few and different" | Final (Isolation Forest, RCF) |
-| PU learning | Learn from positives + unlabeled data | Final Polymarket check |
 
-## 10. Lecture map
+## 9. Lecture map
 
 | Week | Topic | Project use |
 | --- | --- | --- |
 | 1 (Sep 30) | ML pipeline, bias–variance, validation and cross-validation, OLS, PCA | Pipelines, time-based validation. *The Week 1 PDF on Ashish's Mac is stored only in iCloud and could not be read yet; open it once in Finder to download it.* |
-| 2 (Oct 7) | Prediction markets (guest lecture, Yurii Nosov) | Market mechanics, data quirks, insider cases, Isolation Forest demo |
+| 2 (Oct 7) | Prediction markets (guest lecture, Yurii Nosov) | Market mechanics, data quirks |
 | 3 (Oct 14) | Regularization, lasso, ridge, elastic net, tuning, logistic regression | Elastic-net model, validation tuning |
-| 4 (Oct 21) | Outlier detection: Isolation Forest, Online IF, Random Cut Forest, forests/XGBoost, PU learning | Midterm tree models; final detectors |
+| 4 (Oct 21) | Outlier detection: Isolation Forest, Online IF, Random Cut Forest, forests/XGBoost, PU learning | Midterm tree models |
 | 5 (Oct 28) | Midterm presentations | — |
-| 6 (Nov 4) | Agentic AI: reasoning, planning, ReAct/CodeAct, AgentBeats | News-timestamp agent design |
-| 7 (Nov 18) | Agents: tool use and memory | Agent implementation |
-| 8 (Nov 25) | Table-reasoning agent and error localization (guest); Quiz 2 | Agent evaluation ideas |
+| 6 (Nov 4) | Agentic AI: reasoning, planning, ReAct/CodeAct, AgentBeats | — |
+| 7 (Nov 18) | Agents: tool use and memory | — |
+| 8 (Nov 25) | Table-reasoning agent and error localization (guest); Quiz 2 | — |
 | 9 (Dec 2) | Final presentations | — |
 
 New slides are added here as they arrive in `STATS_414/lectures`.
 
-## 11. Glossary
+## 10. Glossary
 
-**Ask / bid:** lowest price to buy YES / highest price to sell it. **Midpoint:** (bid + ask)/2. **Spread:** ask − bid. **Candle:** one hour's summary (open, high, low, close of bid, ask and trade price, plus volume and open interest). **Open interest:** contracts outstanding. **Event:** a group of related markets. **Ladder:** an event with one market per threshold. **Favorite / long shot:** a contract priced near $1 / near $0. **Resolution / settlement:** the official answer and payout. **Brier score:** mean squared error of probabilities. **Ablation:** removing a feature group to see what it adds. **Leakage (modeling):** using information not available at prediction time. **Information leakage (markets):** prices moving before the news is public. **PU learning:** positive–unlabeled classification. **CFTC:** the US regulator of event contracts.
+**Ask / bid:** lowest price to buy YES / highest price to sell it. **Midpoint:** (bid + ask)/2. **Spread:** ask − bid. **Candle:** one hour's summary (open, high, low, close of bid, ask and trade price, plus volume and open interest). **Open interest:** contracts outstanding. **Event:** a group of related markets. **Ladder:** an event with one market per threshold. **Favorite / long shot:** a contract priced near $1 / near $0. **Resolution / settlement:** the official answer and payout. **Brier score:** mean squared error of probabilities. **Ablation:** removing a feature group to see what it adds. **Leakage (modeling):** using information not available at prediction time. **CFTC:** the US regulator of event contracts.
 
-## 12. Decisions and open questions
+## 11. Decisions and open questions
 
 | Date | Decision |
 | --- | --- |
-| Oct 26 | Midterm "Almost Certain?" and final "Who Knew?" are connected; everyone works on every step |
-| Oct 26 | Repo private; notebooks for code; LaTeX conference template for the report |
-| Oct 26 | Category mapping in 8.1 and the 1–10¢ long-shot cutoff accepted |
-| Oct 26 | News-timestamp agent and Polymarket check are in scope |
+| Oct 26 | Everyone works on every step |
+| Oct 26 | Notebooks for code |
 | Oct 27 | Full-population rebuild of the midterm replaces the 25% sample in the presentation |
 | Oct 27 | UCLA style guide adopted for all slides and plots |
+| Oct 28 | Deck retitled "The 99-Cent Question: How Accurate Are Kalshi's Odds?" |
+| Oct 28 | Public repo `414-Project-99` created with fresh history, no credentials, no raw data |
+| Nov 4 | Prof. Cheng changed the final; old final plan, order books and scripts removed |
 
 Open:
-- Who presents which midterm slides (decide after rehearsal). Deck: 12 content slides plus a Thank You slide (no backup slides), about 10:20 of talk, leaving about 4:40 for questions.
-- Final: only 35 long-shot winners in the course categories under the first-quote rule (37 with the Oct 28 outcome refresh: Economy 20, Politics 10, Technology 6, Entertainment 1); choose how to widen the sample in week 1.
-- **Order books on GitHub:** Oct 1–10 (446 files) are pushed. Oct 11–25 (720 files, about 1.1 GB) are still to push, in commits of about 150 MB or less (a 374 MB push was dropped). Paused Oct 27 at Ashish's request. The full set is on Ashish's Mac in `data/raw/orderbook/`.
-- Optional cleanup on the Mac: `data/raw/_obtar/` (1.7 GB of copy pieces) and `data/raw/_to_delete/`.
+- The new final assignment: scope, data and deadlines once Prof. Cheng posts them.
 
-## 13. Change log
+## 12. Change log
 
 | Date | Change |
 | --- | --- |
+| 2026-11-04 | Final changed by Prof. Cheng: removed the "Who Knew?" plan (old section 8), order books, the Oct 28 refresh files and the order-book/refresh scripts; sections renumbered |
+| 2026-10-28 | Public repo `414-Project-99` created (fresh history, credentials read from `.env`, raw data excluded) |
+| 2026-10-28 | Deck retitled; slide 3 caveat and slide 12 "next" line removed |
 | 2026-10-28 | Database refresh done: Oct 26 re-pulled (unchanged), outcomes refreshed (+7,977 settled markets) into `markets_2026-10-28.parquet`; Oct 27 not needed |
 | 2026-10-28 | Deck finalized: backup slides removed, Thank You slide added (13 slides) |
 | 2026-10-27 | Midterm deck rebuilt around EDA: notebook 03 (landscape, prices, spreads, full-range calibration), 12 main slides timed to about 10:20; model slides merged; section 7.1 added |

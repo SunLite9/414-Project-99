@@ -235,7 +235,7 @@ s.addText([
   { text: "Prices are calibrated within half a point, with a favorite–long-shot bias at the ends", options: { bullet: { indent: 16 }, breakLine: true } },
   { text: "No model beat the price for favorites, and buying them at the ask lost money", options: { bullet: { indent: 16 } } },
 ], { placeholder: "body" });
-s.addNotes("About 0:45. Three takeaways: what Kalshi trades, how accurate its prices are, and that favorites are not free money. For the final we look at the other end of the calibration plot: long shots that won, and whether informed trading shows up before the news. Then questions. Total talk is about 10:20, leaving four to five minutes for questions.");
+s.addNotes("About 0:45. Three takeaways: what Kalshi trades, how accurate its prices are, and that favorites are not free money. Then questions. Total talk is about 10:20, leaving four to five minutes for questions.");
 
 // ================= 13 · thank you =================
 s = pres.addSlide({ masterName: "BLUE", sectionTitle: "Close" });

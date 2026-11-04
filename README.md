@@ -1,11 +1,10 @@
-# STATS 414 project: Almost Certain? → Who Knew?
+# STATS 414 project: The 99-Cent Question
 
 Team: Juan Cortes-Aguiar, Ravikiran Madichetty, Ashish Singh. Course: STATS 414, Fall 2026 (Prof. Guang Cheng).
 
 **Start here:** [Team handbook](team_handbook/TEAM_HANDBOOK.md) (what we do and why, in full) · [Style guide](style_guide/STYLE_GUIDE.md) (UCLA look for slides and plots)
 
 - **Midterm (Oct 28):** do Kalshi YES contracts first seen at a 90–99¢ ask win as often as their price says, and can market features predict which favorites lose better than the price itself?
-- **Final (Dec 2 / report Dec 11):** the other tail. Among 1–10¢ long shots that won, did prices or volume move before the news (informed trading) in Politics, Technology, Entertainment and Economy markets?
 
 ## Midterm at a glance
 
@@ -40,8 +39,7 @@ data/raw/  (not in this repo: course data; rebuilt by the pull scripts)
 data/processed/midterm_entries.*       the 10,351-row midterm study table
 results/midterm/                       metrics, bootstrap intervals, tables and figures
 slides/midterm/                        deck (+ build_deck.js that generates it from the figures)
-access_kalshi2.ipynb, insider_demo*, lab_database_walkthrough*   Juan's first look + course demos
-COURSE_MATERIALS_README.md             the guest lecture's README
+access_kalshi2.ipynb                   Juan's first look at the data
 ```
 
 ## Reproduce
@@ -55,7 +53,7 @@ jupyter nbconvert --to notebook --execute --inplace 03_midterm_eda.ipynb     # ~
 node ../slides/midterm/build_deck.js                                          # optional: rebuild the deck (needs pptxgenjs)
 ```
 
-**Raw data is not included.** The course Kalshi data may not be redistributed, so `data/raw/` is not in this repository. Class members can rebuild it with `notebooks/pull_candles.py`, `pull_meta.py` and `pull_orderbook.py` (credentials in a local `.env`, see `.env.example`) while course access is open. `data/processed/midterm_entries.*` and `results/` are included, so notebook 02 and the slides run without it.
+**Raw data is not included.** The course Kalshi data may not be redistributed, so `data/raw/` is not in this repository. Class members can rebuild it with `notebooks/pull_candles.py`, and `pull_meta.py` (credentials in a local `.env`, see `.env.example`) while course access is open. `data/processed/midterm_entries.*` and `results/` are included, so notebook 02 and the slides run without it.
 
 ## Data notes and limits
 
